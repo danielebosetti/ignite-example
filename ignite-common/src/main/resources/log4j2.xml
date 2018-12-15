@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration>
+
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5p %c{1.} - %m%n" />
+    </Console>
+    <File name="LogFile" fileName="target/logs/mainLog.log" append="false">
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5p %c{1.} - %m%n" />
+    </File>
+  </Appenders>
+
+  <Loggers>
+    <AsyncLogger name="org.apache.ignite.internal.processors.cache.persistence.GridCacheDatabaseSharedManager">
+      <AppenderRef ref="LogFile" />
+    </AsyncLogger>
+    
+    <AsyncRoot level="info">
+      <AppenderRef ref="Console" />
+      <AppenderRef ref="LogFile" />
+    </AsyncRoot>
+  </Loggers>
+</Configuration>

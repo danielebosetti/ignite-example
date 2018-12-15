@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+<!-- use vmIp to test locally or multicastIp to locate the cluster -->
+<!-- class="org.apache.ignite.spi.discovery.tcp.ipfinder.vm.TcpDiscoveryVmIpFinder" -->
+<!-- class="org.apache.ignite.spi.discovery.tcp.ipfinder.multicast.TcpDiscoveryMulticastIpFinder" -->
+  <bean id="tcpPortConfig"
+    class="org.apache.ignite.spi.discovery.tcp.ipfinder.vm.TcpDiscoveryVmIpFinder">
+    <property name="addresses">
+      <list>
+        <value>127.0.0.1:47500..47503</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="tcpDiscSpi" class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
+    <property name="ipFinder" ref="tcpPortConfig" />
+  </bean>
+
+  <bean id="persistConf"
+    class="org.apache.ignite.configuration.DataStorageConfiguration">
+    <property name="defaultDataRegionConfiguration">
+      <bean class="org.apache.ignite.configuration.DataRegionConfiguration">
+        <property name="persistenceEnabled" value="true" />
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="igniteLogger" class="org.apache.ignite.logger.slf4j.Slf4jLogger"/>
+
+  <!--   common config; share at least discoverySpi and p2p settngs -->
+ <bean id="baseConfig" class="org.apache.ignite.configuration.IgniteConfiguration" abstract="true">
+    <!-- the default "discoverySpi" will discover server nodes on the same network
+    use "tcpDiscSpi" to connect to a fixed list of servers (to test locally) -->
+    <property name="discoverySpi" ref="tcpDiscSpi" />
+    <property name="peerClassLoadingEnabled" value="true" />
+    <property name="gridLogger" ref="igniteLogger" />
+    <property name="metricsLogFrequency" value="0" />
+  </bean>
+
+</beans>

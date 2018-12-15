@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <bean id="cache-config.desk" class="org.apache.ignite.configuration.CacheConfiguration">
+    <property name="name" value="desk" />
+    <property name="sqlSchema" value="PUBLIC" />
+    <property name="cacheMode" value="REPLICATED" />
+    <property name="queryEntities">
+      <list>
+        <bean class="org.apache.ignite.cache.QueryEntity">
+          <property name="keyType" value="java.lang.String" />
+          <property name="valueType" value="domain.Desk" />
+          <property name="keyFieldName" value="desk" />
+          <property name="fields">
+            <map>
+              <entry key="desk" value="java.lang.String" />
+              <entry key="description" value="java.lang.String" />
+            </map>
+          </property>
+          <property name="keyFields">
+            <value>desk</value>
+          </property>
+          <property name="indexes">
+            <list>
+              <bean class="org.apache.ignite.cache.QueryIndex">
+                <constructor-arg value="desk" />
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+</beans>

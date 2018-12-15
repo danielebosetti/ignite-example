@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <import resource="ignite-common.xml"/>
+
+  <import resource="cachedef/desk.xml"/>
+  <import resource="cachedef/position.xml"/>
+  <import resource="cachedef/product.xml"/>
+  
+  <!--   gets p2p and commSpi from common config -->
+  <bean id="serverConfig" class="org.apache.ignite.configuration.IgniteConfiguration" parent="baseConfig">
+    <property name="dataStorageConfiguration" ref="persistConf" />
+    <property name="cacheConfiguration">
+      <list>
+        <ref bean="cache-config.desk" />
+        <ref bean="cache-config.position" />
+        <ref bean="cache-config.product" />
+      </list>
+    </property>
+  </bean>
+
+</beans>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <bean id="cache-config.position" class="org.apache.ignite.configuration.CacheConfiguration">
+    <property name="name" value="position" />
+    <property name="sqlSchema" value="PUBLIC" />
+    <property name="cacheMode" value="REPLICATED" />
+    <property name="queryEntities">
+      <list>
+        <bean class="org.apache.ignite.cache.QueryEntity">
+          <property name="keyType" value="domain.PositionKey" />
+          <property name="valueType" value="domain.Position" />
+          <property name="fields">
+            <map>
+              <entry key="desk" value="java.lang.String" />
+              <entry key="product" value="java.lang.String" />
+              <entry key="quantity" value="long" />
+            </map>
+          </property>
+	      <property name="keyFields">
+            <list>
+              <value>desk</value>
+              <value>product</value>
+            </list>
+          </property>
+          <property name="indexes">
+            <list>
+              <bean class="org.apache.ignite.cache.QueryIndex">
+                <constructor-arg value="desk" />
+              </bean>
+              <bean class="org.apache.ignite.cache.QueryIndex">
+                <constructor-arg value="product" />
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+    
+  </bean>
+</beans>
